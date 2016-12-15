@@ -1,4 +1,4 @@
-name := """play-java-intro"""
+name := """uuid-manager"""
 
 version := "1.0-SNAPSHOT"
 
@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   // If you enable PlayEbean plugin you must remove these
   // JPA dependencies to avoid conflicts.
   javaJpa,
-  "org.hibernate" % "hibernate-entitymanager" % "4.3.7.Final"
+  "org.hibernate" % "hibernate-entitymanager" % "4.3.7.Final",
+  "org.eclipse.jgit" % "org.eclipse.jgit" % "4.4.0.201606070830-r"
 )
 
 
