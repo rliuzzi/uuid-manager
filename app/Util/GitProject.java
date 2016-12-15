@@ -1,4 +1,4 @@
-package models;
+package Util;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class GitProject {
 
-    public static final String ROOT_DIR = "$HOME/uuid-store";
+    public static final String ROOT_DIR = "$HOME/git/uuid-store";
     private static final String GIT_REPO_URL = "git@github.com:rliuzzi/uuid-store.git";
     private File localPath;
     private Git gitProject;
