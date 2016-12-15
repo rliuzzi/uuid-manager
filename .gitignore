@@ -13,9 +13,9 @@ bin/
 /lib/
 /logs/
 /modules
-/project/project
-/project/target
-/project/.sbtserver
+project/project
+project/target
+project/.sbtserver
 /target
 tmp/
 test-result
