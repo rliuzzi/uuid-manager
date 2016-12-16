@@ -1,14 +1,15 @@
 package controllers;
 
 import models.Device;
+import models.DeviceStore;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import play.data.FormFactory;
-import play.db.jpa.JPA;
-import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 import static play.libs.Json.toJson;
@@ -18,20 +19,21 @@ public class Registration extends Controller {
     @Inject
     FormFactory formFactory;
 
+    @Inject
+    DeviceStore deviceStore;
+
     public Result index() {
         return ok(index.render());
     }
 
-    @Transactional
-    public Result addDevice() {
+    public Result addDevice() throws IOException, GitAPIException{
         Device device = formFactory.form(Device.class).bindFromRequest().get();
-        JPA.em().persist(device);
+        deviceStore.save(device);
         return redirect(routes.Registration.index());
     }
 
-    @Transactional(readOnly = true)
-    public Result getDevices() {
-        List<Device> devices = (List<Device>) JPA.em().createQuery("select d from Device d").getResultList();
+    public Result getDevices() throws IOException{
+        List<Device> devices = deviceStore.getDevices();
         if(devices != null & !devices.isEmpty()) {
             for(Device device : devices) {
                 System.out.println(device.toString());
