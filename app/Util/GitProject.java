@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class GitProject {
 
-    public static final String ROOT_DIR = "$HOME/git/uuid-store";
+    public static final String ROOT_DIR = System.getProperty("user.home") + "/git/uuid-store";
     private static final String GIT_REPO_URL = "git@github.com:rliuzzi/uuid-store.git";
     private File localPath;
     private Git gitProject;
@@ -40,13 +40,10 @@ public class GitProject {
 
     @Inject
     public GitProject() throws IOException, GitAPIException{
-        if(Play.current().isProd()) {
-            cloneRemoteRepository(branch);
-            checkoutBranch(branch);
-        } else {
-            localPath = new File(ROOT_DIR);
-            gitProject = Git.open(localPath);
-        }
+//      cloneRemoteRepository(branch);
+//      checkoutBranch(branch);
+        localPath = new File(ROOT_DIR);
+        gitProject = Git.open(localPath);
         gitProject.pull().setTransportConfigCallback(transportConfigCallback).call();
     }
 
