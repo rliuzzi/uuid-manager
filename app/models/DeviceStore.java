@@ -23,9 +23,9 @@ public class DeviceStore {
     @Inject
     GitProject gitProject;
 
-    String context = "appname";
+    String context = "zone";
     public static final String SUFFIX = "-uuids.txt";
-    File file = new File(GitProject.ROOT_DIR + "/" + context + SUFFIX);
+    File file;
 
     public void reload() throws IOException {
         devicesStore = new HashMap<String,Device>();
@@ -70,11 +70,12 @@ public class DeviceStore {
         return lines;
     }
 
-    public String getContext() {
-        return context;
+    public void init(String context) {
+        this.context = context;
+        System.out.println("CONTEXT: " + context);
+        this.file = new File(GitProject.ROOT_DIR + "/" + context + SUFFIX);
+        System.out.println("FILE: " + file.getName());
     }
 
-    public void setContext(String context) {
-        this.context = context;
-    }
+
 }

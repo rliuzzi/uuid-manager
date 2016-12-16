@@ -1,11 +1,10 @@
-@()
+@(context: String)
 
 @main("Welcome to Play") {
 
 <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
 
-
-    <form class="form-inline" method="POST" action="@routes.Registration.addDevice()">
+    <form class="form-inline" method="POST" action="@routes.Registration.addDevice(context)">
         <div class="form-group">
             <input type="text" name="uuid" class="form-control" placeholder="uuid"/>
         </div>
@@ -13,7 +12,7 @@
     </form>
 
     <div class="page-header">
-        <h2>UUIDs</h2>
+        <h2>@context UUIDs</h2>
     </div>
 
 

@@ -3,9 +3,13 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Registration.index
-POST    /device                     controllers.Registration.addDevice
-GET     /devices                    controllers.Registration.getDevices
+# Extract the page parameter from the path, or fix the value for /
+GET     /                          controllers.Registration.index(context = "zone")
+GET     /:context                  controllers.Registration.index(context:String)
+
+# Devices
+POST    /:context/device           controllers.Registration.addDevice(context:String)
+GET     /:context/devices          controllers.Registration.getDevices(context:String)
 
 
 # Map static resources from the /public folder to the /assets URL path

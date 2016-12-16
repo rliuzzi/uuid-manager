@@ -22,17 +22,19 @@ public class Registration extends Controller {
     @Inject
     DeviceStore deviceStore;
 
-    public Result index() {
-        return ok(index.render());
+    public Result index(String context) {
+        return ok(index.render(context));
     }
 
-    public Result addDevice() throws IOException, GitAPIException{
+    public Result addDevice(String context) throws IOException, GitAPIException{
+        deviceStore.init(context);
         Device device = formFactory.form(Device.class).bindFromRequest().get();
         deviceStore.save(device);
-        return redirect(routes.Registration.index());
+        return redirect(routes.Registration.index(context));
     }
 
-    public Result getDevices() throws IOException{
+    public Result getDevices(String context) throws IOException{
+        deviceStore.init(context);
         List<Device> devices = deviceStore.getDevices();
         if(devices != null & !devices.isEmpty()) {
             for(Device device : devices) {
