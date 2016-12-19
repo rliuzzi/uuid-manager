@@ -1,6 +1,17 @@
 # Ignore Play! working directory #
 logs
-target
+target/.history
+target/coffeescript
+target/jshint
+target/less
+target/native_libraries
+target/resolution-cache
+target/scala-2.11
+target/streams
+target/universal
+target/web
+target/docker/opt
+target/docker/stage/opt/docker
 /.idea
 /.idea_modules
 /.classpath
@@ -16,7 +27,6 @@ bin/
 project/project
 project/target
 project/.sbtserver
-/target
 tmp/
 test-result
 server.pid

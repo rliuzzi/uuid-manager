@@ -15,5 +15,12 @@ libraryDependencies ++= Seq(
 )
 
 
+// setting a maintainer which is used for all packaging types
+maintainer := "Romina Liuzzi"
+
+// exposing the play ports
+dockerExposedPorts in Docker := Seq(9000, 9443)
+
+// run this with: docker run -p 9000:9000 uuid-manager:1.0-SNAPSHOT
 
 fork in run := true
