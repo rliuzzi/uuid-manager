@@ -1,5 +1,6 @@
 package models;
 
+import Util.CmdExecutor;
 import Util.GitProject;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
@@ -51,6 +52,10 @@ public class DeviceStore {
         List<String> content = transform(devices);
         Util.Util.write(HEADER, content, file);
         gitProject.addAllCommitPush("added UUID:" + device.getUuid() + " to: " + context + SUFFIX);
+        System.out.println(Context.zone.name());
+        if(Context.zone.name().equalsIgnoreCase(context)) {
+            CmdExecutor.executeCommand(CmdExecutor.ADD_DEVICES_ZONES);
+        }
     }
 
     public List<Device> getDevices () throws IOException{
