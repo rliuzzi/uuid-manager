@@ -27,24 +27,31 @@ import java.util.ArrayList;
 public class GitProject {
 
 //    public static final String ROOT_DIR_UUID_STORE = System.getProperty("user.home") + "/git/iOS-uuid";
+
+    /**UUID STORE REPO, PATH, GIT*/
     public static final String ROOT_DIR_UUID_STORE = "/tmp/git/iOS-uuid";
     public static final String GIT_REPO_URL_UUID_STORE = "git@github.com:coolnagour/iOS-uuid";
+    private Git gitProjectUuidStore;
+
+
+    /**ZONE APP REPO, PATH, GIT*/
     private static final String GIT_REPO_URL_ZONE_CONTROLLER = "git@github.com:coolnagour/App-iOS-Controller";
     public static final String ROOT_DIR_UUID_ZONE_CONTROLLER = "/tmp/git/App-iOS-Controller";
-    private Git gitProjectUuidStore;
     private Git gitProjectZoneController;
-    private TransportConfigCallback transportConfigCallback;
 
+    private TransportConfigCallback transportConfigCallback;
     private String branch = "master";
 
 
     @Inject
     public GitProject() throws IOException, GitAPIException{
 
+        //INIT UUID STORE GIT PROJECT
         gitProjectUuidStore = cloneRemoteRepository(GIT_REPO_URL_UUID_STORE, ROOT_DIR_UUID_STORE, branch);
         checkoutBranch(gitProjectUuidStore, branch);
         gitProjectUuidStore.pull().setTransportConfigCallback(transportConfigCallback).call();
 
+        //INIT ZONE PROJECT
         gitProjectZoneController = cloneRemoteRepository(GIT_REPO_URL_ZONE_CONTROLLER, ROOT_DIR_UUID_ZONE_CONTROLLER, branch);
         checkoutBranch(gitProjectZoneController, branch);
         gitProjectZoneController.pull().setTransportConfigCallback(transportConfigCallback).call();
