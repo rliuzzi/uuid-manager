@@ -26,38 +26,43 @@ import java.util.ArrayList;
  */
 public class GitProject {
 
-    public static final String ROOT_DIR = System.getProperty("user.home") + "/git/uuid-store";
-    private static final String GIT_REPO_URL = "git@github.com:rliuzzi/uuid-store.git";
-    private File localPath;
-    private Git gitProject;
+//    public static final String ROOT_DIR_UUID_STORE = System.getProperty("user.home") + "/git/iOS-uuid";
+    public static final String ROOT_DIR_UUID_STORE = "/tmp/git/iOS-uuid";
+    public static final String GIT_REPO_URL_UUID_STORE = "git@github.com:coolnagour/iOS-uuid";
+    private static final String GIT_REPO_URL_ZONE_CONTROLLER = "git@github.com:coolnagour/App-iOS-Controller";
+    public static final String ROOT_DIR_UUID_ZONE_CONTROLLER = "/tmp/git/App-iOS-Controller";
+    private Git gitProjectUuidStore;
+    private Git gitProjectZoneController;
     private TransportConfigCallback transportConfigCallback;
 
     private String branch = "master";
 
-    public File getLocalPath() {
-        return localPath;
-    }
 
     @Inject
     public GitProject() throws IOException, GitAPIException{
-//      cloneRemoteRepository(branch);
-//      checkoutBranch(branch);
-        localPath = new File(ROOT_DIR);
-        gitProject = Git.open(localPath);
-        gitProject.pull().setTransportConfigCallback(transportConfigCallback).call();
+
+        gitProjectUuidStore = cloneRemoteRepository(GIT_REPO_URL_UUID_STORE, ROOT_DIR_UUID_STORE, branch);
+        checkoutBranch(gitProjectUuidStore, branch);
+        gitProjectUuidStore.pull().setTransportConfigCallback(transportConfigCallback).call();
+
+        gitProjectZoneController = cloneRemoteRepository(GIT_REPO_URL_ZONE_CONTROLLER, ROOT_DIR_UUID_ZONE_CONTROLLER, branch);
+        checkoutBranch(gitProjectZoneController, branch);
+        gitProjectZoneController.pull().setTransportConfigCallback(transportConfigCallback).call();
+
+        //TODO: Add Missing Repos
     }
 
-    public void cloneRemoteRepository(String branch) throws IOException, GitAPIException {
+    public Git cloneRemoteRepository(String repoUrl, String rootDir, String branch) throws IOException, GitAPIException {
 
-        Files.createDirectories(Paths.get(ROOT_DIR));
-        File localAndroidRepo = new File(ROOT_DIR);
+        Files.createDirectories(Paths.get(rootDir));
+        File localAndroidRepo = new File(rootDir);
 
         ArrayList<String> branchesToClone = new ArrayList<String>();
         branchesToClone.add("master");
         branchesToClone.add(branch);
 
         // then clone
-        System.out.println("Cloning from " + GIT_REPO_URL + " to " + ROOT_DIR);
+        System.out.println("Cloning from " + repoUrl + " to " + rootDir);
 
         SshSessionFactory sshSessionFactory = new JschConfigSessionFactory() {
             @Override
@@ -82,18 +87,20 @@ public class GitProject {
             }
         };
 
-        gitProject = Git.cloneRepository()
-                .setURI(GIT_REPO_URL)
+        Git gitProject = Git.cloneRepository()
+                .setURI(repoUrl)
                 .setDirectory(localAndroidRepo)
                 .setBranchesToClone(branchesToClone)
                 .setTransportConfigCallback(transportConfigCallback)
                 .call();
 
         System.out.println("Having repository: " + gitProject.getRepository().getDirectory());
+
+        return gitProject;
     }
 
 
-    public void checkoutBranch(String branch) throws IOException, GitAPIException{
+    public void checkoutBranch(Git gitProject, String branch) throws IOException, GitAPIException{
         System.out.println("Checkingout branch " + branch);
         Ref ref;
         try {
@@ -119,21 +126,34 @@ public class GitProject {
     }
 
     public void addCommitPush(String nameFileToAdd, String message) throws IOException, GitAPIException {
-        gitProject.pull().setTransportConfigCallback(transportConfigCallback).call();
+        //PULL LATEST CHANGES ON ALL REPOS
+        gitProjectUuidStore.pull().setTransportConfigCallback(transportConfigCallback).call();
+        gitProjectZoneController.pull().setTransportConfigCallback(transportConfigCallback).call();
+        //TODO: Add Missing Repos
+
         System.out.println("git add file: " + nameFileToAdd);
-        gitProject.add().addFilepattern(nameFileToAdd).call();
-        CommitCommand commit = gitProject.commit();
+        gitProjectUuidStore.add().addFilepattern(nameFileToAdd).call();
+        CommitCommand commit = gitProjectUuidStore.commit();
         commit.setMessage(message).call();
-        gitProject.push().setTransportConfigCallback(transportConfigCallback).call();
+        gitProjectUuidStore.push().setTransportConfigCallback(transportConfigCallback).call();
     }
 
     public void addAllCommitPush(String message) throws IOException, GitAPIException {
-        gitProject.pull().setTransportConfigCallback(transportConfigCallback).call();
+        //PULL LATEST CHANGES ON ALL REPOS
+        gitProjectUuidStore.pull().setTransportConfigCallback(transportConfigCallback).call();
+        gitProjectZoneController.pull().setTransportConfigCallback(transportConfigCallback).call();
+        //TODO: Add Missing Repos
+
         System.out.println("git add all files ");
-        gitProject.add().addFilepattern(".").call();
-        CommitCommand commit = gitProject.commit();
-        commit.setMessage(message).call();
-        gitProject.push().setTransportConfigCallback(transportConfigCallback).call();
+        gitProjectUuidStore.add().addFilepattern(".").call();
+        //Only commit and push in RELEASE MODE
+        if(Play.current().isProd()) {
+            CommitCommand commit = gitProjectUuidStore.commit();
+            commit.setMessage(message).call();
+            gitProjectUuidStore.push().setTransportConfigCallback(transportConfigCallback).call();
+        }
     }
+
+
 
 }

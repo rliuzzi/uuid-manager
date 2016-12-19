@@ -12,7 +12,7 @@ public class CmdExecutor {
     public static final String[] ADD_DEVICES_ZONES = {
             "/bin/sh",
             "-c",
-            "cd $HOME/git/App-iOS-Controller/fastlane; fastlane add_devices deviceFile:$HOME/git/iOS-uuid/zone-uuids.txt"
+            "cd /tmp/git/App-iOS-Controller/fastlane; fastlane add_devices deviceFile:/tmp/git/iOS-uuid/zone-uuids.txt"
 
     };
 

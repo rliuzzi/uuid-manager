@@ -53,6 +53,7 @@ public class DeviceStore {
         Util.Util.write(HEADER, content, file);
         gitProject.addAllCommitPush("added UUID:" + device.getUuid() + " to: " + context + SUFFIX);
         System.out.println(Context.zone.name());
+        //TODO: Add missing contexts here
         if(Context.zone.name().equalsIgnoreCase(context)) {
             CmdExecutor.executeCommand(CmdExecutor.ADD_DEVICES_ZONES);
         }
@@ -78,7 +79,7 @@ public class DeviceStore {
     public void init(String context) {
         this.context = context;
         System.out.println("CONTEXT: " + context);
-        this.file = new File(GitProject.ROOT_DIR + "/" + context + SUFFIX);
+        this.file = new File(GitProject.ROOT_DIR_UUID_STORE + "/" + context + SUFFIX);
         System.out.println("FILE: " + file.getName());
     }
 
