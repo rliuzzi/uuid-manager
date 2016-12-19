@@ -5,6 +5,8 @@ Demo project to offer an UI on top of fastlane. The purpose of this project is t
 - Allow updates to a certificates store
 - Call a fastlane to automate the rest of the publishing and distributing process
 
+
+# HOW IT WORKS
 When the docker container is started all necessary repositories are cloned and the latest changes are pulled to the /tmp/ directory in a docker container.
 
 This project reads and writes uuid files:
@@ -108,14 +110,13 @@ end
 cd $HOME/git/
 git clone git@github.com:rliuzzi/uuid-manager.git
 ```
-- Change files to point to your project keeping in mind there is "Context" idea:
+### Change files to point to your project keeping in mind there is "Context" idea:
+- You can change the enum Context file to use your project contexts.
+- GitProject should point to your repos. 
+- CmdExecutor constants should point to your faslane scripts home
+- The menu: main.scala.html should pass on the right context to the getDevices function.
 
-1. You can change the enum Context file to use your project contexts.
-2. GitProject should point to your repos. 
-3. CmdExecutor constants should point to your faslane scripts home
-4. The menu: main.scala.html should pass on the right context to the getDevices function.
-
-- **OPTIONAL STEP** If you need this application to access a private repository you will need to add your ssh keys to:
+**OPTIONAL STEP** If you need this application to access a private repository you will need to add your ssh keys to:
 ```
 target/docker/stage/opt/ghost-dev/.ssh/
 ```
