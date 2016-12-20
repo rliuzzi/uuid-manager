@@ -111,6 +111,9 @@ end
 cd $HOME/git/
 git clone git@github.com:rliuzzi/uuid-manager.git
 ```
+
+- If you haven't already done so, [install Java 8 JDK] (https://java.com/en/download/)
+
 ### Change files to point to your project keeping in mind there is "Context" idea:
 - You can change the enum Context file to use your project contexts.
 - GitProject should point to your repos. 
@@ -124,22 +127,14 @@ target/docker/stage/opt/ghost-dev/.ssh/
 Check how to generate this keys [HERE] (https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) 
 
 # RUN:
-- Open [DOCKER QUICKSTART TERMINAL] (https://docs.docker.com/engine/getstarted/step_one/)
-- Navigate to project home 
+
+- If you haven't done so already, [install Activator] (https://www.lightbend.com/activator/download)
+- Run activator
 ```
-cd $HOME/git/uuid-manager
+$INSTALATION_HOME/activator/bin/activator
 ```
-- Publish changes 
-```
-sbt docker:publishLocal
-```
-- Start the container 
-```
-docker run -p 9000:9000 uuid-manager:1.0-SNAPSHOT
-```
-- Make sure the container exists and is running
-```
-docker ps
-```
-- Open in a browser and access: [http://192.168.99.100:9000](http://192.168.99.100:9000)
+
+- Select the app to run from the directory
+- Compile, build and Run
+- Open a browser to http://IP:9000
 
